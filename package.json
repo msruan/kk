@@ -1,13 +1,15 @@
 {
   "scripts": {
     "ts": "npx tsc --watch",
-    "server": "node --watch dist/server.js"
+    "server": "node --env-file=.env --watch dist/server.js"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "fastify": "^5.2.0"
+    "express": "^4.21.2",
+    "express-async-errors": "^3.1.1"
   }
 }
