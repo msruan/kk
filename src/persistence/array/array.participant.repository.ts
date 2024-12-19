@@ -1,4 +1,5 @@
 import { Participant } from "../../domain/entities/participant";
+import { NotFoundException } from "../../domain/errors";
 import {
   IParticipantRepository,
   ParticipantCreateParams,
@@ -37,10 +38,11 @@ export class ArrayParticipantRepository implements IParticipantRepository {
   findById(id: number): Promise<Participant> {
     let target = this.repository.find((participant)=>participant.id === id)
 
-    if(!target){
-      throw new Error("Participant not found")
-    }
     
+    if(!target){
+      throw new NotFoundException("Participant not found")
+    }
+
     return new Promise((resolve) => resolve(target));
   }
 

@@ -1,4 +1,5 @@
 import { Group } from "../../domain/entities/group";
+import { NotFoundException } from "../../domain/errors";
 import {
   GroupCreateParams,
   GroupEditParams,
@@ -35,7 +36,7 @@ export class ArrayGroupRepository implements IGroupRepository {
   public findById(id: number): Promise<Group> {
     const targetGroup = this.repository.find((group) => id === group.id);
     if (!targetGroup) {
-      throw new Error("Group not find");
+      throw new NotFoundException("Group not find");
     }
     return new Promise((resolve) => resolve(targetGroup));
   }
@@ -45,20 +46,9 @@ function updateGroupObject(
   group: Group,
   updatePayload: GroupEditParams
 ): Group {
-  if (updatePayload.name) {
-    group.name = updatePayload.name;
-  }
-
-  if (updatePayload.description) {
-    group.description = updatePayload.description;
-  }
-
-  if (updatePayload.celebrationLocal) {
-    group.celebrationLocal = updatePayload.celebrationLocal;
-  }
-
-  if (updatePayload.celebrationDate) {
-    group.celebrationDate = updatePayload.celebrationDate;
+ 
+  if (updatePayload.drawStatus) {
+    group.drawStatus = updatePayload.drawStatus;
   }
 
   return group;

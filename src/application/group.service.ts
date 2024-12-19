@@ -17,6 +17,8 @@ type ParticipantJoinParams = {
   payload: Omit<ParticipantCreateParams, "group">;
 };
 
+type GetParticipantByIdParams = {participant : Participant, giftedParticipant?: Participant}
+
 @injectable()
 @registry([
   //Todo: search for a best method
@@ -67,14 +69,25 @@ export class GroupService {
     return createdUser;
   }
 
+  public async getParticipantById(participantId: number) : Promise<GetParticipantByIdParams> {
+    const participant = await this.participantRepo.findById(participantId);
+
+    const payload :GetParticipantByIdParams  = {
+      participant
+    }
+
+    if(participant.giftedId !== null){
+
+     payload.giftedParticipant = await this.participantRepo.findById(participant.giftedId);
+    }
+
+    return payload;
+  }
+
   public async draw(groupId: number) : Promise<Participant[]>{
-
-
 
     let participants = await this.participantRepo.findMany({groupId});
 
-    
-    
     participants = doDraw(participants);
 
     for(const participant of participants){
