@@ -7,8 +7,10 @@ export interface IGroupRepository {
   findById(id: number): Promise<Group>;
 }
 
-export type GroupCreateParams = Omit<Group, "id">;
-export type GroupEditParams = Omit<Group, "id">;
+export type GroupCreateParams = Omit<Group, "id" | "drawStatus">;
+export interface GroupEditParams {
+    drawStatus :"done" | "pending"
+}
 export type ParticipantCreateParams = Omit<Participant, "id"> & {
   groupId: number;
 };

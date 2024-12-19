@@ -5,6 +5,7 @@ import {
   ParticipantCreateParams,
 } from "../../domain/repositories/group.repository";
 import { Request, Response } from "express";
+import { Participant } from "../../domain/entities/participant";
 
 @injectable()
 export class GroupController {
@@ -24,7 +25,14 @@ export class GroupController {
     });
     res.json(newParticipant).status(201);
   }
-  
+
+  public async draw(req: Request, res: Response) {
+    const groupId = parseInt(req.params.pk)
+    const updatedParticipants = await this.groupService.draw(groupId);
+    console.log(updatedParticipants)
+    // const body = updatedParticipants.map((participant)=>participantToDTO)
+    res.json(updatedParticipants).status(201);
+  }
 }
 
 export default container.resolve(GroupController);

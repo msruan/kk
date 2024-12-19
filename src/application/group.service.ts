@@ -10,6 +10,7 @@ import { ArrayGroupRepository } from "../persistence/array/array.group.repositor
 import { ArrayParticipantRepository } from "../persistence/array/array.participant.repository";
 import { IParticipantRepository } from "../domain/repositories/participant.repository";
 import { Participant } from "../domain/entities/participant";
+import { faker } from "@faker-js/faker";
 
 type ParticipantJoinParams = {
   groupId: number;
@@ -65,4 +66,46 @@ export class GroupService {
 
     return createdUser;
   }
+
+  public async draw(groupId: number) : Promise<Participant[]>{
+
+
+
+    let participants = await this.participantRepo.findMany({groupId});
+
+    
+    
+    participants = doDraw(participants);
+
+    for(const participant of participants){
+      this.participantRepo.update(participant)
+    }
+    
+    this.groupRepo.updateById(groupId,{drawStatus : "done"})
+    console.log(participants);
+    return participants;
+  }
+}
+
+
+function doDraw(participants : Participant[]){
+
+  const pickeds : Participant[] = [];
+
+  for(const participant of participants){
+
+    let picked : Participant;
+
+    do{
+
+      picked = faker.helpers.arrayElement(participants);
+
+    } while(pickeds.includes(picked));
+
+    participant.giftedId = picked.id;
+
+    pickeds.push(picked);
+  }
+
+  return participants;
 }

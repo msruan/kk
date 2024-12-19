@@ -13,5 +13,6 @@ export class GroupRouter extends BaseRouter {
 
     this.app.post("/groups", (req, res) => controller.create(req, res)); //Todo: se eu tirar a arrow, morre
     this.app.post("/groups/:pk/join", (req, res) => controller.join(req, res)); //Todo: se eu tirar a arrow, morre
+    this.app.post("/groups/:pk/draw", (req, res) => controller.draw(req, res)); //Todo: se eu tirar a arrow, morre
   }
 }
