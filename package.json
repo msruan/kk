@@ -1,7 +1,8 @@
 {
   "scripts": {
     "ts": "npx tsc --watch",
-    "server": "node --env-file=.env --watch ./dist/server.js"
+    "server": "node --env-file=.env --watch ./dist/server.js",
+"build" : "npx tsc"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
