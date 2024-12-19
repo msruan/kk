@@ -9,7 +9,7 @@ export interface IGroupRepository {
 
 export type GroupCreateParams = Omit<Group, "id" | "drawStatus">;
 export interface GroupEditParams {
-    drawStatus :"done" | "pending"
+  drawStatus: "done" | "pending";
 }
 export type ParticipantCreateParams = Omit<Participant, "id"> & {
   groupId: number;

@@ -5,30 +5,33 @@ import {
   ParticipantCreateParams,
 } from "../domain/repositories/group.repository";
 
-import { inject, injectable, registry } from "tsyringe";
-import { ArrayGroupRepository } from "../persistence/array/array.group.repository";
-import { ArrayParticipantRepository } from "../persistence/array/array.participant.repository";
 import { IParticipantRepository } from "../domain/repositories/participant.repository";
 import { Participant } from "../domain/entities/participant";
 import { faker } from "@faker-js/faker";
+import { PrismaGroupRepository } from "../persistence/prisma/prisma.group.repository";
+import { PrismaParticipantRepository } from "../persistence/prisma/prisma.participant.repository";
+import { inject, injectable, registry } from "tsyringe";
 
 type ParticipantJoinParams = {
   groupId: number;
   payload: Omit<ParticipantCreateParams, "group">;
 };
 
-type GetParticipantByIdParams = {participant : Participant, giftedParticipant?: Participant}
+type GetParticipantByIdParams = {
+  participant: Participant;
+  giftedParticipant?: Participant;
+};
 
 @injectable()
 @registry([
   //Todo: search for a best method
   {
     token: "IGroupRepository",
-    useClass: ArrayGroupRepository,
+    useClass: PrismaGroupRepository,
   },
   {
     token: "IParticipantRepository",
-    useClass: ArrayParticipantRepository,
+    useClass: PrismaParticipantRepository,
   },
 ])
 export class GroupService {
@@ -69,51 +72,48 @@ export class GroupService {
     return createdUser;
   }
 
-  public async getParticipantById(participantId: number) : Promise<GetParticipantByIdParams> {
+  public async getParticipantById(
+    participantId: number
+  ): Promise<GetParticipantByIdParams> {
     const participant = await this.participantRepo.findById(participantId);
 
-    const payload :GetParticipantByIdParams  = {
-      participant
-    }
+    const payload: GetParticipantByIdParams = {
+      participant,
+    };
 
-    if(participant.giftedId !== null){
-
-     payload.giftedParticipant = await this.participantRepo.findById(participant.giftedId);
+    if (participant.giftedId !== null) {
+      payload.giftedParticipant = await this.participantRepo.findById(
+        participant.giftedId
+      );
     }
 
     return payload;
   }
 
-  public async draw(groupId: number) : Promise<Participant[]>{
-
-    let participants = await this.participantRepo.findMany({groupId});
+  public async draw(groupId: number): Promise<Participant[]> {
+    let participants = await this.participantRepo.findMany({ groupId });
 
     participants = doDraw(participants);
 
-    for(const participant of participants){
-      this.participantRepo.update(participant)
+    for (const participant of participants) {
+      this.participantRepo.update(participant);
     }
-    
-    this.groupRepo.updateById(groupId,{drawStatus : "done"})
+
+    this.groupRepo.updateById(groupId, { drawStatus: "done" });
     console.log(participants);
     return participants;
   }
 }
 
+function doDraw(participants: Participant[]) {
+  const pickeds: Participant[] = [];
 
-function doDraw(participants : Participant[]){
+  for (const participant of participants) {
+    let picked: Participant;
 
-  const pickeds : Participant[] = [];
-
-  for(const participant of participants){
-
-    let picked : Participant;
-
-    do{
-
+    do {
       picked = faker.helpers.arrayElement(participants);
-
-    } while(pickeds.includes(picked));
+    } while (pickeds.includes(picked));
 
     participant.giftedId = picked.id;
 

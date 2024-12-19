@@ -36,11 +36,10 @@ export class ArrayParticipantRepository implements IParticipantRepository {
   }
 
   findById(id: number): Promise<Participant> {
-    let target = this.repository.find((participant)=>participant.id === id)
+    let target = this.repository.find((participant) => participant.id === id);
 
-    
-    if(!target){
-      throw new NotFoundException("Participant not found")
+    if (!target) {
+      throw new NotFoundException("Participant not found");
     }
 
     return new Promise((resolve) => resolve(target));
@@ -51,7 +50,7 @@ export class ArrayParticipantRepository implements IParticipantRepository {
 
     updateParticipantObject(target, mutation);
 
-    return new Promise((resolve)=>resolve(target))
+    return new Promise((resolve) => resolve(target));
   }
 }
 
@@ -59,20 +58,8 @@ function updateParticipantObject(
   participant: Participant,
   updatePayload: ParticipantUpdateParams
 ): Participant {
-  if (updatePayload.nick) {
-    participant.nick = updatePayload.nick;
-  }
-
-  if (updatePayload.email) {
-    participant.email = updatePayload.email;
-  }
-
   if (updatePayload.giftedId) {
     participant.giftedId = updatePayload.giftedId;
-  }
-
-  if (updatePayload.giftsList) {
-    participant.giftsList = updatePayload.giftsList;
   }
 
   return participant;

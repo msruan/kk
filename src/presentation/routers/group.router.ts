@@ -1,7 +1,7 @@
 import { Application } from "express";
 import { BaseRouter } from "./base.router";
 import { GroupController } from "../controllers/group.controller";
-import { container } from "tsyringe";
+import { container, injectable } from "tsyringe";
 
 export class GroupRouter extends BaseRouter {
   constructor(app: Application, name: string) {
@@ -14,7 +14,9 @@ export class GroupRouter extends BaseRouter {
     this.app.post("/groups", (req, res) => controller.create(req, res)); //Todo: se eu tirar a arrow, morre
     this.app.post("/groups/:pk/join", (req, res) => controller.join(req, res)); //Todo: se eu tirar a arrow, morre
     this.app.post("/groups/:pk/draw", (req, res) => controller.draw(req, res)); //Todo: se eu tirar a arrow, morre
-    
-    this.app.get("/participants/:pk", (req, res) => controller.getParticipant(req, res)); //Todo: se eu tirar a arrow, morre
+
+    this.app.get("/participants/:pk", (req, res) =>
+      controller.getParticipant(req, res)
+    ); //Todo: se eu tirar a arrow, morre
   }
 }

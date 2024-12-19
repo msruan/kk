@@ -1,7 +1,6 @@
 import express from "express";
 import "express-async-errors";
 import "reflect-metadata";
-import "./commom/ioc";
 import { BaseRouter } from "./presentation/routers/base.router";
 import cors from "cors";
 import { GroupRouter } from "./presentation/routers/group.router";

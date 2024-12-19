@@ -1,19 +1,27 @@
 {
   "scripts": {
     "ts": "npx tsc --watch",
-    "server": "node --env-file=.env --watch ./dist/server.js"
+    "server": "node --env-file=.env --watch ./dist/src/server.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.30.1",
+    "prisma": "^6.1.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
     "@faker-js/faker": "^9.3.0",
+    "@prisma/client": "^6.1.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.38.2",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
+    "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0"
   }
