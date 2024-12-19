@@ -1,4 +1,5 @@
 import { Participant } from "../../domain/entities/participant";
+import { NotFoundException } from "../../domain/errors";
 import {
   IParticipantRepository,
   ParticipantCreateParams,
@@ -17,7 +18,6 @@ export class ArrayParticipantRepository implements IParticipantRepository {
       nick,
       email,
       null,
-      null,
       group
     );
 
@@ -35,8 +35,45 @@ export class ArrayParticipantRepository implements IParticipantRepository {
     return new Promise((resolve) => resolve(filtereds));
   }
 
-  //Checkpoint: I was doing this to make the draw service
-  update(mutation: ParticipantUpdateParams): Promise<Participant[]> {
-    throw new Error("Method not implemented.");
+  findById(id: number): Promise<Participant> {
+    let target = this.repository.find((participant)=>participant.id === id)
+
+    
+    if(!target){
+      throw new NotFoundException("Participant not found")
+    }
+
+    return new Promise((resolve) => resolve(target));
   }
+
+  async update(mutation: ParticipantUpdateParams): Promise<Participant> {
+    let target = await this.findById(mutation.id);
+
+    updateParticipantObject(target, mutation);
+
+    return new Promise((resolve)=>resolve(target))
+  }
+}
+
+function updateParticipantObject(
+  participant: Participant,
+  updatePayload: ParticipantUpdateParams
+): Participant {
+  if (updatePayload.nick) {
+    participant.nick = updatePayload.nick;
+  }
+
+  if (updatePayload.email) {
+    participant.email = updatePayload.email;
+  }
+
+  if (updatePayload.giftedId) {
+    participant.giftedId = updatePayload.giftedId;
+  }
+
+  if (updatePayload.giftsList) {
+    participant.giftsList = updatePayload.giftsList;
+  }
+
+  return participant;
 }
