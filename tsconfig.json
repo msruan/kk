@@ -12,6 +12,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "node16",
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "resolveJsonModule": true,
+    "experimentalDecorators": true /* Enable experimental support for legacy experimental decorators. */,
+    "emitDecoratorMetadata": true
   }
 }

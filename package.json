@@ -1,15 +1,19 @@
 {
   "scripts": {
     "ts": "npx tsc --watch",
-    "server": "node --env-file=.env --watch dist/server.js"
+    "server": "node --env-file=.env --watch ./dist/server.js"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
-    "express-async-errors": "^3.1.1"
+    "express-async-errors": "^3.1.1",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.8.0"
   }
 }
