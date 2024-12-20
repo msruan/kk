@@ -1,4 +1,3 @@
-import { container, injectable } from "tsyringe";
 import { GroupService } from "../../application/group.service";
 import {
   GroupCreateParams,
@@ -7,18 +6,19 @@ import {
 import { Request, Response } from "express";
 import { Participant } from "../../domain/entities/participant";
 import { Group } from "../../domain/entities/group";
+import { container, injectable } from "tsyringe";
 
 type GetParticipantsResponse = {
-  participant : Omit<Participant, "giftedId"> & {gifted: Participant}
-}
+  participant: Omit<Participant, "giftedId"> & { gifted: Participant };
+};
 
 type CreateGroupRequest = GroupCreateParams;
-type CreateGroupResponse = Group
+type CreateGroupResponse = Group;
 
-type ParticipantJoinRequest = Omit<ParticipantCreateParams, "group">
-type ParticipantJoinResponse = Participant
+type ParticipantJoinRequest = Omit<ParticipantCreateParams, "group">;
+type ParticipantJoinResponse = Participant;
 
-type DrawResponse = Participant[]
+type DrawResponse = Participant[];
 
 @injectable()
 export class GroupController {
@@ -31,7 +31,7 @@ export class GroupController {
   }
 
   public async join(req: Request, res: Response) {
-    const body : ParticipantJoinRequest = req.body; //Todo: type this
+    const body: ParticipantJoinRequest = req.body; //Todo: type this
     const newParticipant = await this.groupService.join({
       groupId: parseInt(req.params.pk),
       payload: body,
@@ -40,26 +40,27 @@ export class GroupController {
   }
 
   public async draw(req: Request, res: Response) {
-    const groupId = parseInt(req.params.pk)
+    const groupId = parseInt(req.params.pk);
     const updatedParticipants = await this.groupService.draw(groupId);
-    console.log(updatedParticipants)
+    console.log(updatedParticipants);
     res.json(updatedParticipants as DrawResponse).status(201);
   }
 
-  public async getParticipant(req: Request, res: Response){
-
+  public async getParticipant(req: Request, res: Response) {
     const participantId = parseInt(req.params.pk);
-    const participantObject = await this.groupService.getParticipantById(participantId);
-    console.log(participantObject)
-    const {participant,giftedParticipant} = participantObject
-    const {giftedId, ...participantDTO} = participant;
-    
+    const participantObject = await this.groupService.getParticipantById(
+      participantId
+    );
+    console.log(participantObject);
+    const { participant, giftedParticipant } = participantObject;
+    const { giftedId, ...participantDTO } = participant;
+
     const body = {
       participant: {
         ...participantDTO,
-        gifted : giftedParticipant
-      }
-    }
+        gifted: giftedParticipant,
+      },
+    };
 
     res.json(body as GetParticipantsResponse).status(200);
   }
