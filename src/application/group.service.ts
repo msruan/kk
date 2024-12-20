@@ -11,6 +11,8 @@ import { faker } from "@faker-js/faker";
 import { PrismaGroupRepository } from "../persistence/prisma/prisma.group.repository";
 import { PrismaParticipantRepository } from "../persistence/prisma/prisma.participant.repository";
 import { inject, injectable, registry } from "tsyringe";
+import { ArrayGroupRepository } from "../persistence/array/array.group.repository";
+import { ArrayParticipantRepository } from "../persistence/array/array.participant.repository";
 
 type ParticipantJoinParams = {
   groupId: number;
@@ -27,11 +29,11 @@ type GetParticipantByIdParams = {
   //Todo: search for a best method
   {
     token: "IGroupRepository",
-    useClass: PrismaGroupRepository,
+    useClass: ArrayGroupRepository,
   },
   {
     token: "IParticipantRepository",
-    useClass: PrismaParticipantRepository,
+    useClass: ArrayParticipantRepository,
   },
 ])
 export class GroupService {
@@ -100,7 +102,6 @@ export class GroupService {
     }
 
     this.groupRepo.updateById(groupId, { drawStatus: "done" });
-    console.log(participants);
     return participants;
   }
 }

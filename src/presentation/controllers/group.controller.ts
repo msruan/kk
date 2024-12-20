@@ -42,7 +42,6 @@ export class GroupController {
   public async draw(req: Request, res: Response) {
     const groupId = parseInt(req.params.pk);
     const updatedParticipants = await this.groupService.draw(groupId);
-    console.log(updatedParticipants);
     res.json(updatedParticipants as DrawResponse).status(201);
   }
 
@@ -51,7 +50,6 @@ export class GroupController {
     const participantObject = await this.groupService.getParticipantById(
       participantId
     );
-    console.log(participantObject);
     const { participant, giftedParticipant } = participantObject;
     const { giftedId, ...participantDTO } = participant;
 
