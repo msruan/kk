@@ -4,7 +4,7 @@ A clean DDD based project to make and manage draws of Kris Kringle.
 Before the class, the API was working fine using array repositories implementation. We putted Prisma, and the services of create a group, join and get a participant are okay, but the draw service is not working with Prisma. 
 
 You can check what this project is missing on [todo](#todo).
-<br>
+<br><br>
 
 ### Endpoints
 
